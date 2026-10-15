@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Reset ─────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #f5f4fb;
+  color: #0f0e17;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv02','cv03','cv04','cv11';
+}
+::selection { background: rgba(91,92,246,.15); }
+:focus-visible { outline: 2px solid #5b5cf6; outline-offset: 2px; border-radius: 4px; }
+
+/* ── Scrollbar ──────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 4px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: rgba(91,92,246,.25); border-radius: 99px; }
+
+/* ── Custom checkbox ────────────────────────────────────────────────────────── */
+.df-check {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid #c8c7dc;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  background: white;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+}
+.df-check:hover { border-color: #5b5cf6; }
+.df-check:checked {
+  background: #5b5cf6;
+  border-color: #5b5cf6;
+  box-shadow: 0 2px 8px rgba(91,92,246,.35);
+}
+.df-check:checked::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 5px;
+  width: 5px; height: 8px;
+  border: 2px solid white;
+  border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+
+/* ── Timeline ───────────────────────────────────────────────────────────────── */
+.tl-line {
+  position: absolute;
+  left: 8px; top: 24px; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, #e2e1f0, transparent);
+  pointer-events: none;
+}
+
+/* ── Light input ────────────────────────────────────────────────────────────── */
+.df-input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #e2e1ef;
+  background: #f5f4fb;
+  font-family: inherit;
+  font-size: 13.5px;
+  color: #0f0e17;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s, background .15s;
+}
+.df-input:focus {
+  border-color: #5b5cf6;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(91,92,246,.12);
+}
+.df-input::placeholder { color: #b3b1c8; }
+
+/* ── Dark input (auth page) ─────────────────────────────────────────────────── */
+.df-input-dark {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(255,255,255,.11);
+  background: rgba(255,255,255,.07);
+  font-family: inherit;
+  font-size: 14px;
+  color: rgba(255,255,255,.9);
+  outline: none;
+  transition: border-color .18s, background .18s, box-shadow .18s;
+  caret-color: #a855f7;
+}
+.df-input-dark:focus {
+  border-color: rgba(168,85,247,.65);
+  background: rgba(255,255,255,.10);
+  box-shadow: 0 0 0 3px rgba(168,85,247,.14);
+}
+.df-input-dark::placeholder { color: rgba(255,255,255,.28); }
+
+/* ── Task row hover ─────────────────────────────────────────────────────────── */
+.task-row { transition: background .13s ease; }
+.task-row:hover { background: rgba(91,92,246,.035); }
+
+/* ── Add row ────────────────────────────────────────────────────────────────── */
+.add-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 20px; cursor: pointer;
+  color: #b3b1c8; font-size: 13.5px; font-weight: 500;
+  border-radius: 8px; transition: color .13s, background .13s;
+  user-select: none; border: 0; background: transparent; width: 100%;
+}
+.add-row:hover { color: #5b5cf6; background: rgba(91,92,246,.05); }
+
+/* ── Edit panel slide-in ────────────────────────────────────────────────────── */
+.edit-panel { animation: scaleIn .22s cubic-bezier(.22,1,.36,1) both; transform-origin: top left; }
+@keyframes scaleIn { from { opacity:0; transform: scale(.97) translateY(-4px); } to { opacity:1; transform: scale(1) translateY(0); } }
+
+/* ── Progress bar ───────────────────────────────────────────────────────────── */
+@keyframes progFill { from { width: 0; } }
+.prog-fill { animation: progFill .9s cubic-bezier(.22,1,.36,1) both; }
+
+/* ── Drag ───────────────────────────────────────────────────────────────────── */
+.task-dragging { opacity: .38; background: rgba(91,92,246,.04); border-radius: 10px; }
+.task-drop-above { position: relative; }
+.task-drop-above::before {
+  content: ''; position: absolute; top: -1px; left: 16px; right: 16px;
+  height: 2px; border-radius: 99px;
+  background: linear-gradient(90deg,#5b5cf6,#a855f7);
+  box-shadow: 0 0 6px rgba(91,92,246,.5);
+  pointer-events: none; animation: dropLine .12s ease both;
+}
+.task-drop-below { position: relative; }
+.task-drop-below::after {
+  content: ''; position: absolute; bottom: -1px; left: 16px; right: 16px;
+  height: 2px; border-radius: 99px;
+  background: linear-gradient(90deg,#5b5cf6,#a855f7);
+  box-shadow: 0 0 6px rgba(91,92,246,.5);
+  pointer-events: none; animation: dropLine .12s ease both;
+}
+@keyframes dropLine { from { opacity:0; transform:scaleX(.6); } to { opacity:1; transform:scaleX(1); } }
+
+.drag-handle {
+  cursor: grab; display: flex; align-items: center;
+  color: #d4d2e8; padding: 2px; border-radius: 4px;
+  transition: color .13s, opacity .13s; flex-shrink: 0;
+  border: 0; background: transparent; touch-action: none;
+}
+.drag-handle:hover { color: #5b5cf6; }
+.drag-handle:active { cursor: grabbing; }
+.task-done .drag-handle { opacity: .3; }
+
+/* ── Floating bg animation (auth) ───────────────────────────────────────────── */
+@keyframes floatRise {
+  0%   { transform: translateY(105vh) rotate(var(--rot)); opacity: 0; }
+  6%   { opacity: var(--op); }
+  92%  { opacity: var(--op); }
+  100% { transform: translateY(-8vh) rotate(calc(var(--rot) + 25deg)); opacity: 0; }
+}
+@keyframes sway {
+  0%, 100% { margin-left: 0; }
+  50%       { margin-left: 18px; }
+}
+.float-item {
+  animation:
+    floatRise var(--dur) var(--delay) linear infinite,
+    sway calc(var(--dur) * .55) var(--delay) ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ── Toast slide ────────────────────────────────────────────────────────────── */
+@keyframes toastSlide { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:translateX(0); } }
+.toast-in { animation: toastSlide .3s cubic-bezier(.22,1,.36,1) both; }
+
+/* ── Sidebar active planner ─────────────────────────────────────────────────── */
+.pl-active { background: rgba(91,92,246,.09); color: #5b5cf6; }
+
+/* ── Responsive: always-visible controls on touch ───────────────────────────── */
+@media (hover: none) {
+  .drag-handle { opacity: 1 !important; }
+  .del-btn      { opacity: 1 !important; }
+}
